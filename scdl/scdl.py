@@ -544,8 +544,9 @@ def download_track(track, playlist_name=None, playlist_file=None):
 
     # Downloadable track
     filename = None
-    if track['downloadable'] and not arguments['--onlymp3']:
-        filename = download_original_file(track, title)
+    # HOTFIX: Soundcloud v2 won't parse original download urls
+    # if track['downloadable'] and not arguments['--onlymp3']:
+    #     filename = download_original_file(track, title)
 
     if filename is None:
         filename = download_hls_mp3(track, title)
