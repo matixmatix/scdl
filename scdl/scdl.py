@@ -441,11 +441,13 @@ def get_filename(track, original_filename=None):
 def download_original_file(track, title):
     logger.info('Downloading the original file.')
     original_url = track['download_url']
+    original_url = re.sub(r'^(https:\/\/)api(\.)', '\\1api-v2\\2', original_url)
 
     # Get the requests stream
     r = requests.get(
         original_url, params={'client_id': CLIENT_ID}, stream=True
     )
+    r = requests.get(r.json()['redirectUri'])
     if r.status_code == 401:
         logger.info('The original file has no download left.')
         return None
@@ -544,9 +546,8 @@ def download_track(track, playlist_name=None, playlist_file=None):
 
     # Downloadable track
     filename = None
-    # HOTFIX: Soundcloud v2 won't parse original download urls
-    # if track['downloadable'] and not arguments['--onlymp3']:
-    #     filename = download_original_file(track, title)
+    if track['downloadable'] and not arguments['--onlymp3']:
+        filename = download_original_file(track, title)
 
     if filename is None:
         filename = download_hls_mp3(track, title)
