@@ -129,7 +129,7 @@ def main():
     # import conf file
     get_config()
 
-    logger.info('Soundcloud Downloader')
+    logger.info('Soundcloud Downloader -- MX')
     logger.debug(arguments)
 
     if arguments['-o'] is not None:
